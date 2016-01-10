@@ -4,23 +4,27 @@
 #define __DATE_H__
 
 #include <iostream>
-using namespace std;
-
 
 class Date;
+void CreatePoints(Date dates[], int N);
+void Sort(Date dates[], int N);
+
 
 class Date
 {
 public:
-	Date(int y = 1980, int m = 1, int d = 1):year(y), month(m), day(d) {};
-	~Date(){}
+	Date(int y = 1980, int m = 1, int d = 1) :year(y), month(m), day(d) {};
 
 	Date& operator = (const Date& x);
-
-	bool operator > (const Date& x);
-	bool operator < (const Date& x);
-	bool operator == (const Date& x);
-	void print() const {cout << year << "-" << month << "-" << day <<endl;};
+	/*
+	int  getyear()  const {return year;};
+	int  getmonth() const {return month;};
+	int  getday()   const {return day;};
+	*/
+	bool operator  > (const Date& x) const;
+	bool operator  < (const Date& x) const;
+	bool operator == (const Date& x) const;
+	void print() const {std::cout << year << "-" << month << "-" << day <<std::endl;};
 
 	/* data */
 private:
@@ -29,8 +33,9 @@ private:
 	int day;
 };
 
+
 inline bool
-Date::operator > (const Date& x) 
+Date::operator > (const Date& x) const
 {
 	if(this->year > x.year ||
 		(this->year == x.year && this->month > x.month)||
@@ -41,7 +46,7 @@ Date::operator > (const Date& x)
 
 
 inline bool
-Date::operator < (const Date& x) 
+Date::operator < (const Date& x) const
 {
 	if(this->year < x.year ||
 		(this->year == x.year && this->month < x.month)||
@@ -51,7 +56,7 @@ Date::operator < (const Date& x)
 }
 
 inline bool
-Date::operator == (const Date& x) 
+Date::operator == (const Date& x) const
 {
 	if(this->year == x.year && this->month ==x.month && this->day == x.day)
 		return true;
@@ -59,14 +64,15 @@ Date::operator == (const Date& x)
 }
 
 inline Date& 
-Date::operator = (const Date& x)
+Date::operator = (const Date& x) 
 {
-	this->year = x.year;
+	this->year = x.year;	//x.year之所以能够直接取数据的一个解释：同Class的不同object互为friend.
 	this->month = x.month;
 	this->day = x.day;
 
 	return *this;
 }
+
 
 static bool isLeapYear(int year)
 {
@@ -81,14 +87,12 @@ static int randday(int year, int month, int randnum)
 
 void CreatePoints(Date dates[], int N)
 {
-	int y,m,d;
-
 	srand((unsigned)time(0));  
     for (int i = 0; i < N; ++i)
     {
-    	y = rand()%100 + 1980;
-    	m = rand()%12 + 1;
-    	d = randday(y, m, rand());
+    	int y = rand()%100 + 1980;
+    	int m = rand()%12 + 1;
+    	int d = randday(y, m, rand());
 
     	dates[i] = Date(y,m,d);
     }
@@ -99,6 +103,7 @@ void Sort(Date dates[], int N)
 	for (int i = 1; i < N; ++i)
 	{
 		int j = i-1;
+		
 		Date tmp = dates[i];
 
 		while(j >= 0 && tmp < dates[j])
@@ -108,6 +113,7 @@ void Sort(Date dates[], int N)
 		}	
 
 		dates[j+1] = tmp;
+		
 	}
 }
 

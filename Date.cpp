@@ -2,6 +2,10 @@
 /* 2016.1.10 panxyong */
 
 #include "date.h"
+#include <iostream>
+
+using namespace std;
+
 #define N 10
 
 int main(int argc, char *argv[]) 
